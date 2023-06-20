@@ -10,9 +10,9 @@ without any loops.
  */
 
 import java.util.*;
+import java.lang.Math;
 
-
-public class solution1 {
+public class Problem2 {
 
 	public static void main(String[] args) {
 		Scanner s=new Scanner(System.in);
@@ -27,12 +27,12 @@ public class solution1 {
 		while (readLessons<t)
 		{
 			readLessons=(c-f)*i;
-			System.out.println("at day "+i+"  I can cover"+readLessons+" lessons.");
+			
 			i++;
 		}
 		System.out.println("during "+(i-1)+" days I can cover all lessons.");
-		
-
+		System.out.println("Second method \t"+(int)Math.ceil((double)t/(c-f))); //Math Formula
+//without ceiling in some cases we get wrong number
 	}
 
 }
