@@ -7,17 +7,30 @@ public class FormattedDate extends Date{
 
     public FormattedDate(String m, int d, int y){
         this(m, d, y, Format.DDMMYYYY);
-//        setMonth(m);
-//        setDay(d);
-//        setYear(y);
-//        format = Format.DDMMYYYY;
     }
 
     public FormattedDate(String m, int d, int y, Format f){
-        setMonth(m);
-        setDay(d);
-        setYear(y);
+        super(m, d, y);
         format = f;
+    }
+
+    public FormattedDate(FormattedDate that){
+        super(that);
+        format = that.format;
+    }
+
+    public FormattedDate(){
+        this("May", 15, 1897, Format.MMDDYYYY);
+    }
+
+    public Object clone(){
+        return (FormattedDate)super.clone();
+    }
+
+    public FormattedDate nextYear() {
+        FormattedDate result = new FormattedDate(this);
+        result.setYear(result.getYear()+1);
+        return result;
     }
 
     public static void writeOutput(Date date, Format format){
@@ -42,8 +55,34 @@ public class FormattedDate extends Date{
         writeOutput(this, format);
     }
 
+    public String toString(){
+        String day = getDay()<10?"0"+getDay():getDay()+"";
+        int m = Month.valueOf(getMonth().toUpperCase()).ordinal();
+        String month = (m+1)<10?"0"+(m+1):(m+1)+"";
+
+        switch (format){
+            case DDMMYYYY:
+                return (day+"/"+month+"/"+getYear());
+            case MMDDYYYY:
+                return (month+"/"+day+"/"+getYear());
+
+            case YYYYMMDD:
+                return (getYear()+"/"+month+"/"+day);
+
+        }
+        return null;
+    }
+
+    public boolean equals(Object that){
+       return super.equals(that) && format == ((FormattedDate)that).format;
+    }
+
     public static void main(String[] args) {
-        FormattedDate date = new FormattedDate("July", 5, 1987, Format.YYYYMMDD);
-        date.writeOutput();
+        FormattedDate date = new FormattedDate("March", 5, 1989, Format.YYYYMMDD);
+        FormattedDate date1 = new FormattedDate("July", 5, 1987, Format.YYYYMMDD);
+        //date.writeOutput();
+        //writeOutput(date.nextYear(), Format.DDMMYYYY);
+        //Date date1 = new FormattedDate("July", 5, 1987, Format.YYYYMMDD);
+        System.out.println(date.compareTo(date1));
     }
 }

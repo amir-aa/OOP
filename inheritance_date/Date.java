@@ -1,36 +1,50 @@
-/*This is a sample for OOP concepts and inheritance for classes in pure JAVA */
-public class Date
+public class Date implements Comparable<Date>, Cloneable
 {
 
+    public int compareTo(Date that){
+        if(year==that.year){
+            if(month.equals(that.month)){
+               return day-that.day;
+            }
+
+            return FormattedDate.Month.valueOf(month.toUpperCase()).ordinal()-
+                    FormattedDate.Month.valueOf(that.month.toUpperCase()).ordinal();
+        }
+        return year-that.year;
+    }
+
+    public Object clone(){
+        try {
+            return (Date)super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
     private static int index =0;
+
+    private String month = "May";
+    private int day = 13;
+    private int year = 1675; //a four digit number.
 
     public Date(Date that){
         this(that.month,that.day, that.year);
-//        this.month = that.month;
-//        this.day = that.day;
-//        this.year = that.year;
     }
     public Date(String month, int day, int year){
         index++;
         this.month = month;
         this.day = day;
         this.year = year;
-        //this.
     }
 
     public Date(){
         this("June", 14, 1675);
-        //doThing();
-//        this.month = "May";
-//        this.day = 12;
-//        this.year = 1978;
-        //this.
     }
 
-    private String month = "May";
-    private int day = 13;
-    private int year = 1675; //a four digit number.
-
+    public Date nextYear(){
+        Date result = new Date(this);
+        result.year++;
+        return result;
+    }
     public int getYear(){
         return year;
     }
@@ -46,26 +60,30 @@ public class Date
         System.out.println(month + " " + day + ", " + year);
     }
 
+    public String toString(){
+        return month + " " + day + ", " + year;
+    }
+
     public static void main(String[] args)
     {
-        System.out.println(index);
-        Date date1, date2;
-        date1 = new Date();
-        System.out.println(index);
-        System.out.println("date1 before :");
-        date1.writeOutput();
-        date2 = new Date(date1);
-        //date2 = new Date("July", 4, 1776);
-        date1.month = "December";
-        date1.day = 31;
-        date1.year = 2012;
-        System.out.println("date1 after:");
-        date1.writeOutput();
-        //date2.month = "July";
-       // date2.day = 4;
-        //date2.year = 1776;
-        System.out.println("date2:");
-        date2.writeOutput();
+//        System.out.println(index);
+//        Date date1, date2;
+//        date1 = new Date();
+//        System.out.println(index);
+//        System.out.println("date1 before :");
+//        date1.writeOutput();
+//        date2 = new Date(date1);
+//        //date2 = new Date("July", 4, 1776);
+//        date1.month = "December";
+//        date1.day = 31;
+//        date1.year = 2012;
+//        System.out.println("date1 after:");
+//        date1.writeOutput();
+//        //date2.month = "July";
+//       // date2.day = 4;
+//        //date2.year = 1776;
+//        System.out.println("date2:");
+//        date2.writeOutput();
 
         //doThing();
 
@@ -75,7 +93,6 @@ public class Date
     public static void doThing(){
         new Date().writeOutput();
     }
-
 
     public String getMonth() {
         return month;
@@ -91,5 +108,18 @@ public class Date
 
     public void setDay(int day) {
         this.day = day;
+    }
+
+    public boolean equals(Object that){
+        if(that==null)
+            return false;
+        else if(getClass() != that.getClass())
+            return false;
+        else if (this==that)
+            return true;
+        else{
+            Date other = (Date) that;
+            return day==other.day && year==other.year && month.equals(other.month);
+        }
     }
 }
